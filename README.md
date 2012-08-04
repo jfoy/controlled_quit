@@ -18,12 +18,12 @@ Or install it yourself as:
 
 ## Usage
 
-ControlledQuit.protect do |quitter|
-  units_of_work.each do |unit|
-    unit.do_work_and_serialize
-    quitter.quit_if_requested
-  end
-end
+    ControlledQuit.protect do |quitter|
+      units_of_work.each do |unit|
+        unit.do_work_and_serialize
+        quitter.quit_if_requested
+      end
+    end
 
 ## Contributing
 
