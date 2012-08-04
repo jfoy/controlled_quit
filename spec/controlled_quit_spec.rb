@@ -3,10 +3,10 @@
 require 'spec_helper'
 require 'controlled_quit'
 
-# ControlledQuit.protect do |quitter|
+# ControlledQuit.protect do |q|
 #   units_of_work.each do |unit|
 #     unit.do_work_and_serialize
-#     quitter.quit_if_requested
+#     q.quit_if_requested
 #   end
 # end
 
@@ -25,9 +25,9 @@ describe ControlledQuit do
   it 'shows a requested message on receiving a shutdown request' do
     message = 'Foo'
     output = capture_stderr do
-      ControlledQuit.protect(:message => message) do |quitter|
+      ControlledQuit.protect(:message => message) do |q|
         Process.kill('INT', $$)
-        @waiter.wait_for { quitter.quit_requested? } # Handle signal race condition
+        @waiter.wait_for { q.quit_requested? } # Handle signal race condition
       end
     end
     output.chomp.should == message
@@ -35,11 +35,11 @@ describe ControlledQuit do
 
   it 'catches SIGINT to register a quit request' do
     requested = false
-    ControlledQuit.protect do |quitter|
-      quitter.message = nil
+    ControlledQuit.protect do |q|
+      q.message = nil
       Process.kill('INT', $$)
-      @waiter.wait_for { quitter.quit_requested? } # Handle signal race condition
-      requested = quitter.quit_requested?
+      @waiter.wait_for { q.quit_requested? } # Handle signal race condition
+      requested = q.quit_requested?
     end
     @fallback_called.should be_false
     requested.should be_true
@@ -56,21 +56,21 @@ describe ControlledQuit do
   context 'the client yields control through allow_quit without a cleanup block' do
     context 'the user has not sent a quit request' do
       it 'returns control to the client' do
-        ControlledQuit.protect do |quitter|
-          quitter.message = nil
-          quitter.quit_if_requested
-          quitter.should_not_receive(:quit!)
+        ControlledQuit.protect do |q|
+          q.message = nil
+          q.quit_if_requested
+          q.should_not_receive(:quit!)
         end
       end
     end
 
     context 'the user has sent a quit request' do
       it 'shuts down the process' do
-        ControlledQuit.protect do |quitter|
-          quitter.message = nil
+        ControlledQuit.protect do |q|
+          q.message = nil
           Process.kill('INT', $$)
-          @waiter.wait_for { quitter.quit_requested? } # Handle signal race condition
-          expect { quitter.quit_if_requested }.to raise_error(SystemExit)
+          @waiter.wait_for { q.quit_requested? } # Handle signal race condition
+          expect { q.quit_if_requested }.to raise_error(SystemExit)
         end
       end
     end
