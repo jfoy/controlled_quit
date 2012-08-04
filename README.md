@@ -1,6 +1,6 @@
 # ControlledQuit
 
-TODO: Write a gem description
+Gem to allow a controlled quit from a command-line application.
 
 ## Installation
 
@@ -18,7 +18,12 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+ControlledQuit.protect do |quitter|
+  units_of_work.each do |unit|
+    unit.do_work_and_serialize
+    quitter.quit_if_requested
+  end
+end
 
 ## Contributing
 
