@@ -1,4 +1,14 @@
 
+# from http://stackoverflow.com/questions/4459330/how-do-i-temporarily-redirect-stderr-in-ruby
+require "stringio"
+def capture_stderr
+  previous_stderr, $stderr = $stderr, StringIO.new
+  yield
+  $stderr.string
+ensure
+  $stderr = previous_stderr
+end
+
 class Waiter
   attr_accessor :timeout, :increment
 
@@ -20,4 +30,5 @@ class Waiter
     end
   end
 end
+
 

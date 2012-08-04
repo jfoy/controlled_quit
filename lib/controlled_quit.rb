@@ -37,8 +37,8 @@ module ControlledQuit
     end
   end
 
-  def self.protect
-    q = Quitter.new
+  def self.protect(opts = {})
+    q = Quitter.new(opts)
     q.register
     yield q
     q.unregister

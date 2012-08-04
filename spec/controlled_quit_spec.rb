@@ -22,7 +22,16 @@ describe ControlledQuit do
     Signal.trap('INT', @outer_handler)
   end
 
-  # it 'shows a requested message on receiving a shutdown request'
+  it 'shows a requested message on receiving a shutdown request' do
+    message = 'Foo'
+    output = capture_stderr do
+      ControlledQuit.protect(:message => message) do |quitter|
+        Process.kill('INT', $$)
+        @waiter.wait_for { quitter.quit_requested? } # Handle signal race condition
+      end
+    end
+    output.chomp.should == message
+  end
 
   it 'catches SIGINT to register a quit request' do
     requested = false
