@@ -53,7 +53,7 @@ describe ControlledQuit do
     @fallback_called.should be_true
   end
 
-  context 'the client yields control through allow_quit' do
+  context 'the client yields control through allow_quit without a cleanup block' do
     context 'the user has not sent a quit request' do
       it 'returns control to the client' do
         ControlledQuit.protect do |quitter|
