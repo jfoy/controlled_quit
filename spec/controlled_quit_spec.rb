@@ -22,9 +22,12 @@ describe ControlledQuit do
     Signal.trap('INT', @outer_handler)
   end
 
+  # it 'shows a requested message on receiving a shutdown request'
+
   it 'catches SIGINT to register a quit request' do
     requested = false
     ControlledQuit.protect do |quitter|
+      quitter.message = nil
       Process.kill('INT', $$)
       @waiter.wait_for { quitter.quit_requested? } # Handle signal race condition
       requested = quitter.quit_requested?
@@ -45,6 +48,7 @@ describe ControlledQuit do
     context 'the user has not sent a quit request' do
       it 'returns control to the client' do
         ControlledQuit.protect do |quitter|
+          quitter.message = nil
           quitter.quit_if_requested
           quitter.should_not_receive(:quit!)
         end
@@ -54,6 +58,7 @@ describe ControlledQuit do
     context 'the user has sent a quit request' do
       it 'shuts down the process' do
         ControlledQuit.protect do |quitter|
+          quitter.message = nil
           Process.kill('INT', $$)
           @waiter.wait_for { quitter.quit_requested? } # Handle signal race condition
           expect { quitter.quit_if_requested }.to raise_error(SystemExit)
