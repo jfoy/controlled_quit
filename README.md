@@ -1,4 +1,5 @@
 # ControlledQuit
+{<img src=https://secure.travis-ci.org/jfoy/controlled_quit.png?branch=master/>}[http://github.com/jfoy/controlled_quit]
 
 Gem to allow a controlled quit from a command-line application.
 
