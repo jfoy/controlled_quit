@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 group :development do
   gem 'rake'
   gem 'rspec'
-  gem 'debugger', :platform => :ruby_19
+  gem 'debugger', :platform => :mri_19
   gem 'travis-lint'
 end
 
