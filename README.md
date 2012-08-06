@@ -1,4 +1,4 @@
-# ControlledQuit [![Build Status](https://secure.travis-ci.org/jfoy/controlled_quit.png)](http://travis-ci.org/jfoy/controlled_quit)
+# ControlledQuit [![Build Status](https://secure.travis-ci.org/jfoy/controlled_quit.png)](http://travis-ci.org/jfoy/controlled_quit) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/jfoy/controlled_quit)
 
 Gem to allow a controlled quit from a command-line application.
 
